@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plant Disease Detection</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='sidebar.css') }}">
+</head>
+<body>
+    <header>
+        <div id="header-content">
+            <img id="logo" src="static/logo.jpg" alt="Website Logo">
+            <div id="hamburger-menu" class="closed" onclick="toggleSidebar()">&#9776;</div>
+            <h1>Plant Disease Detection</h1>
+        </div>
+    </header>
+    <div id="sidebar" class="closed">
+        <a href="#">Home</a>
+        <a href="/predict">Predict Disease</a>
+        <a href="#">Remedies</a>
+        <a href="#">About Us</a>
+    </div>
+    <div id="menu-button" onclick="toggleSidebar()">&#9776;</div>
+    <div id="sidebar" class="closed">
+        <a href="#">Home</a>
+        <a href="/predict">Predict Disease</a>
+        <a href="#">Remedies</a>
+        <!-- Add more feature links as needed -->
+    </div>
+    <div id="content">
+        <form id="upload-form" action="/predict" method="post" enctype="multipart/form-data">
+            <div id="drop-zone">
+                <p>Drag & Drop an image of a plant leaf here</p>
+                <input type="file" name="image" accept="image/*" id="file-input">
+            </div>
+            <input type="submit" value="Predict">
+        </form>
+        <div id="result">
+            {% if prediction %}
+                <h2>Predicted Diseases:</h2>
+                <table>
+                    <tr>
+                        <th>Disease Name</th>
+                        <th>Score</th>
+                    </tr>
+                    {% for entry in prediction %}
+                        <tr>
+                            <td>{{ entry.label }}</td>
+                            <td>{{ "{:.4f}".format(entry.score) }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
+    <script src="{{ url_for('static', filename='drag-and-drop.js') }}"></script>
+    <script src="{{ url_for('static', filename='menu-overlay.js') }}"></script>
+</body>
+</html>
